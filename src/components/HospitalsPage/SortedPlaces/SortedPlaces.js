@@ -17,6 +17,10 @@ const CardWrapper = props => {
         <div className="progress_bar">
         <Progress percent={2} />
         </div>
+        <div>
+          Свободно <span style={{color: "#1890FF"}}>15</span><br/>
+          Всего <span style={{color: "#1890FF"}}>15</span>
+        </div>
       </Card>
     </div>
   );

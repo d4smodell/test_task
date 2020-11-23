@@ -1,10 +1,10 @@
 import { CLEAR_USER_DATA, ERROR_CATCHER, SET_USER_DATA } from "../types";
 import { authAPI, errorHandler } from "../../api";
+import { Redirect } from "react-router-dom";
 
 const initialState = {
   username: null,
   password: null,
-  isFetching: false,
   isAuth: false,
   error: null,
 };
@@ -45,23 +45,16 @@ export const clearUserData = () => ({
 });
 
 export const errorCatcher = (error) => ({ type: ERROR_CATCHER, error });
-
-export const logout = () => async dispatch => {
-    localStorage.clear()
-    dispatch(clearUserData())
-    console.log(initialState.isAuth)
+export const logout = () => {
+  localStorage.clear()
 }
 
 export const login = (username, password, isAuth) => async (dispatch) => {
   try {
     let response = await authAPI.login(username, password, isAuth);
-    dispatch(setAuth(username, password, true));
-    if (response?.data?.access) {
-      return isAuth === true;
-    } else {
+    localStorage.access ? dispatch(setAuth(username, password, true)) : 
       dispatch(errorCatcher(response));
       await errorHandler(response?.data);
-    }
     console.log(isAuth);
   } catch (e) {
     console.log("ERROR: !!!", e);
